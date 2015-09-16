@@ -1,0 +1,17 @@
+﻿        table {
+            border: 3px double #48d1cc;
+        }
+        p {
+            margin-top:10px;
+        }
+        tr, td {
+            border: 3px double #48d1cc;
+            font-size: 45px;      
+            text-align: center;
+            width:100px;
+            height:100px;      
+        }
+        img{
+            max-height: 80px;
+        }
+        

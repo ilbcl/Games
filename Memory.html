@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Memory</title>
+    <script src="Scripts/jquery-2.1.1.js"></script>
+    <script src="Scripts/jquery-ui-1.11.1.js"></script>
+    <script src="Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/Action_memory.js"></script>
+    <link rel="stylesheet" href="Styles/bootstrap.min.css">
+    <link rel="stylesheet" href="Styles/loading_memory.css">
+</head>
+        <div align="center">
+            <div class="badge">Score:</div>
+            <div class="badge" id="out"></div>
+            <br />
+            <input class="btn btn-default" id="start" type="submit" onclick="load()" value="Restart" />
+            <br /> <br />
+            <div class="badge">Record:</div>
+            <div class="badge" id="record"></div>
+            <br />
+            <input class="btn btn-default" type="submit" onclick="resetRecord()" value="Reset record" />
+            <br /> <br />
+            <table>
+                <tr><td><img></td><td><img></td><td><img></td><td><img></td></tr>
+                <tr><td><img></td><td><img></td><td><img></td><td><img></td></tr>
+                <tr><td><img></td><td><img></td><td><img></td><td><img></td></tr>
+            </table>
+        </div>
+</html>

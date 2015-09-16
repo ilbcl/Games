@@ -1,0 +1,14 @@
+﻿    td{
+    width: 7px;
+    height: 7px;
+    float: left;
+    margin: 1px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #white;
+    }
+    #menu{
+    	width: 100px;
+    	height: 100px;
+    	font-size: 14px;
+    }
