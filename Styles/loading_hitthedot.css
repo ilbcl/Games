@@ -17,3 +17,6 @@
 {
   padding-bottom: 1em;
 }
+#col,#row{
+    width:100px;
+}
