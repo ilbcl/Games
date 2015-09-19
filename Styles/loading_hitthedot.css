@@ -1,4 +1,4 @@
-﻿  td {
+﻿#tab td {
     width: 20px;
     height: 20px;
     margin: 3px;
@@ -6,8 +6,14 @@
     border: 1px solid;
     border-radius: 25px;
     background-color: #fff;
-    transition: background-color .5s;
 }
-    .label-info, label {
+.label-info, label {
           font-size: 14px;
     }
+#action{
+        display: none;
+    }
+#menu tr.spaceUnder > td
+{
+  padding-bottom: 1em;
+}
