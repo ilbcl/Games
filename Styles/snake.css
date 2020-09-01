@@ -1,0 +1,9 @@
+﻿    td {
+        width: 20px;
+        height: 20px;
+        float: left;
+        margin: 1px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: white;
+    }
