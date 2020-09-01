@@ -3,7 +3,7 @@ const RenderType = Object.freeze({ "Empty": 0, "Food": 1, "Body": 2, })
 
 let arrow = Arrow.Right;
 class Snake {
-	#body = [];
+    #body = [];
     #food = [];
     #steps = 0;
     #interval;
