@@ -1,0 +1,40 @@
+﻿html {
+    -webkit-user-select: none;
+    /* Chrome/Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+ */
+
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+}
+
+table {
+    margin-top: 20px;
+    border: 3px double #48d1cc;
+}
+
+p {
+    margin-top: 10px !important;
+}
+
+tr,
+td {
+    border: 2px double #48d1cc;
+    font-size: 45px;
+    width: 2em;
+    height: 1em;
+    text-align: center;
+    color: grey;
+}
+
+.label-info,
+label {
+    font-size: 14px;
+}
+
+div {
+    margin-top: 10px;
+}
