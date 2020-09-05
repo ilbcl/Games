@@ -11,6 +11,8 @@ class TicTacToe {
     constructor(params) {
         this.size = params.size;
         this.players = params.players;
+
+        $(document).on("click", "td", e => { this.#step(+(e.target.id)) });        
     }
 
     get #getArea() { return this.size * this.size; }
@@ -108,8 +110,6 @@ class TicTacToe {
         this.#generateTable(this.size, this.size);
         this.#moves = new Array(this.#getArea).fill(0);
         this.showPlayer();
-
-        $(document).on("click", "td", e => { this.#step(+(e.target.id)) });
     }
 }
 

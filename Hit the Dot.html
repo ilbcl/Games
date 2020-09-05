@@ -1,40 +1,40 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <title>Hit the Dot</title>
     <script src="Scripts/jquery-2.1.1.js"></script>
     <script src="Scripts/jquery-ui-1.11.1.js"></script>
     <script src="Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
-    <script src="Scripts/Action_hitthedot.js"></script>
+    <script src="Scripts/core-hitthedot.min.js"></script>
     <link rel="stylesheet" href="Styles/bootstrap.min.css">
-    <link rel="stylesheet" href="Styles/loading_hitthedot.css">
+    <link rel="stylesheet" href="Styles/hitthedot.css">
 </head>
 <div align="center" id="menu">
-<span class="label label-info">Generate playing field:</span><br /><br />
-<table>
-<tr class="spaceUnder">
-	<td>Rows: </td>
-	<td><input type="text" id="row" class="form-control"></td>
-</tr>
-<tr class="spaceUnder">
-	<td>Columns: </td>
-	<td><input type="text" id="col" class="form-control"></td>
-</tr>
-</table> 
-<input class="btn btn-default" type="submit" onclick="load()" value="Start" /><br /><br />
+    <span class="label label-info">Generate playing field:</span>
+    <table>
+        <tr class="spaceUnder">
+            <td>Rows: </td>
+            <td><input type="text" id="row" class="form-control"></td>
+        </tr>
+        <tr class="spaceUnder">
+            <td>Columns: </td>
+            <td><input type="text" id="col" class="form-control"></td>
+        </tr>
+    </table>
+    <input class="btn btn-default" type="submit" onclick="load()" value="Start" />
 </div>
-        <div align="center" id="action">
-            <span class="label label-info">Score:</span>
-            <span class="label label-info"id="out"></span>
-            <br />  <br />
-            <span class="label label-info">Time:</span>
-            <span class="label label-info"id="timer"></span>
-            <br />  <br />
-             <input class="btn btn-default" type="submit" onclick="showMenu()" value="New game" />
-            <br />  <br />
-            <input class="btn btn-default" type="submit" onclick="load()" value="Restart" />
-            <br />  <br />
-            <table id="tab"></table>                
-        </div>
+<div align="center" id="action">
+    <span class="label label-info">Score:</span>
+    <span class="label label-info" id="result"></span>
+    <span class="label label-info">Time:</span>
+    <span class="label label-info" id="timer"></span>
+    <br />
+    <input class="btn btn-default" type="submit" onclick="showMenu()" value="New game" />
+    <br />
+    <input class="btn btn-default" type="submit" onclick="load()" value="Restart" />
+    <table id="tab" />
+</div>
+
 </html>

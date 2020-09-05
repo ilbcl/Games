@@ -1,0 +1,32 @@
+﻿#tab td {
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    float: left;
+    border: 1px solid;
+    border-radius: 25px;
+    background-color: #fff;
+}
+
+.label-info,
+label {
+    font-size: 14px;
+}
+
+#action {
+    display: none;
+}
+
+#menu tr.spaceUnder>td {
+    padding-bottom: 1em;
+}
+
+#col,
+#row {
+    width: 100px;
+}
+
+table,
+.btn {
+    margin-top: 10px;
+}
