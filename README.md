@@ -8,3 +8,5 @@ js+jquery+bootstrap
 <b>Hit The Dot:</b> http://jsfiddle.net/be_cool4ik/f4s0ok2d/
 
 <b>Barley-break:</b> http://jsfiddle.net/be_cool4ik/b9q5vf9e/
+
+<b>Tic-tac-toe:</b> https://jsfiddle.net/be_cool4ik/2h1t3r9x/
