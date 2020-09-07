@@ -7,12 +7,12 @@
     <script src="Scripts/jquery-ui-1.11.1.js"></script>
     <script src="Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
-    <script src="Scripts/core-tictactoe.min.js"></script>
+    <script type="module" src="Scripts/core-tictactoe.min.js"></script>
     <link rel="stylesheet" href="Styles/bootstrap.min.css">
     <link rel="stylesheet" href="Styles/tictactoe.css">
 </head>
 <div align="center">
-    <input class="btn btn-default" type="submit" onclick="load()" value="Restart" />
+    <input class="btn btn-default" id="restart" type="submit" value="Restart" />
     <p id="player" />
     <table id="gameTab" />
 </div>

@@ -1,9 +1,10 @@
-const RenderType = Object.freeze({ "Empty": 0, "Image": 1 }),
-      imgPath = "Images/",
+import { Game, enums } from './core.js';
+
+const imgPath = "Images/",
       images = ["orange.png", "apple.png", "blueberries.png", "strawberry.png", "raspberries.png", "mandarin.png"],
       key = "memory-game-record";
 
-class Memory {
+class Memory extends Game {
     #cells = [];
     #openedCells = [];
     #result = 0;
@@ -17,13 +18,15 @@ class Memory {
     prizePoints;
 
     constructor({ imagesNum = images.length, repeatNum = 2, previewTimeSec = 3, prizePoints = 50 }) {
+        super();
+        
         this.imagesNum = imagesNum;
         this.repeatNum = repeatNum;
         this.previewTimeSec = previewTimeSec;
         this.prizePoints = prizePoints;
-        this.area = { imagesNum: this.imagesNum, repeatNum: this.repeatNum };
+        this.#area = { imagesNum: this.imagesNum, repeatNum: this.repeatNum };
 
-        this.#generateTable(this.#rows, this.#cols);
+        this.generateTable(this.#rows, this.#cols, enums.SizeChart.D1);
         this.#addEventListeners(this);
     }
 
@@ -31,7 +34,7 @@ class Memory {
     set imagesNum(val) { this.#imagesNum = Math.min(val, images.length); }
 
     get area() { return this.#rows * this.#cols; }
-    set area(val) {
+    set #area(val) {
         let mult, abs;
         mult = abs = val.imagesNum * val.repeatNum;
         for (let i = 1; i <= mult; i++)
@@ -49,40 +52,20 @@ class Memory {
         }));
     }
 
-    #generateTable(rows, cols) {
-        let gt = $('table:last'),
-            fragment = document.createDocumentFragment(),
-            tr = document.createElement('tr'),
-            td = document.createElement('td'),
-            cnt = 0;
-
-        gt.empty();
-        for (let i = 0; i < rows; i++) {
-            let row = tr.cloneNode();
-            for (let j = 0; j < cols; j++) {
-                let cell = td.cloneNode();
-                cell.setAttribute("id", cnt++);
-                row.appendChild(cell);
-            }
-            gt.append(row);
-        }
-        gt.append(fragment);
-    }
-
     #resetOpenedCells() { 
         this.#openedCells.fill(null);
     }
 
     #clearOpenedCells() {
         for (let i = 0; i < this.#openedCells.length; i++)
-            this.#draw(this.#openedCells[i], RenderType.Empty);
+            this.#draw(this.#openedCells[i], enums.RenderType.Empty);
         this.#resetOpenedCells();
     }
 
     #draw(id, type) {
         let backImg;
         switch (type) {
-            case RenderType.Image:
+            case enums.RenderType.Content:
                 backImg = this.getImageUrl(this.#cells[id]);
                 break;
             default:
@@ -96,7 +79,7 @@ class Memory {
         let emptyCellIndex = this.#openedCells.findIndex(p => p === null);
         if (emptyCellIndex >= 0 && this.isClosedCell(id) && !this.#isDisabled) {
             this.#openedCells[emptyCellIndex] = id;
-            this.#draw(id, RenderType.Image);
+            this.#draw(id, enums.RenderType.Content);
 
             if (emptyCellIndex > 0) {
                 this.#isDisabled = true;
@@ -114,7 +97,7 @@ class Memory {
                             localStorage[key] = this.#result;
                             this.setRecord();
                         }
-                        alert('Your result: ' + this.#result);
+                        alert(`Your result: ${this.#result}`);
                     }
                     this.#isDisabled = false;
                 }, 350);
@@ -122,7 +105,7 @@ class Memory {
         }
     }
 
-    getImageUrl = (id) => 'url(' + imgPath + images[id] + ')'
+    getImageUrl = (id) => `url(${imgPath + images[id]})`;
 
     getCellImage = (id) => $('#' + id).css('background-image');
 
@@ -147,22 +130,14 @@ class Memory {
 
     setRecord = () => $("#record").text(localStorage[key] ?? 0);
 
-    shuffle(a) {
-        for (let i = a.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [a[i], a[j]] = [a[j], a[i]];
-        }
-        return a;
-    }
-
     engine = () => {
         $("#start").prop('disabled', true);
         this.#resetOpenedCells();
         for (let i = 0; i < this.area; i++)
-            this.#draw(i, RenderType.Image);
+            this.#draw(i, enums.RenderType.Content);
         setTimeout(() => {
                 for (let i = 0; i < this.area; i++)
-                    this.#draw(i, RenderType.Empty);
+                    this.#draw(i, enums.RenderType.Empty);
                 $("#start").prop('disabled', false);
             }, this.previewTimeSec * 1000);
     }
@@ -172,16 +147,19 @@ class Memory {
         this.setRecord();
         this.#openedCells = new Array(this.repeatNum);
         let array = Array.from(Array(images.length).keys());
-        array = this.shuffle(array).slice(0, this.imagesNum);
+        array = this.shuffleArray(array).slice(0, this.imagesNum);
         for (let i = 0; i < this.repeatNum; i++)
             this.#cells = this.#cells.concat(array);
-        this.shuffle(this.#cells);
+        this.shuffleArray(this.#cells);
         this.engine();
     }
 }
 
 $(document).ready(function() {
     load();
+
+    document.getElementById("start").addEventListener("click", load);
+    document.getElementById("resetRecord").addEventListener("click", resetRecord);
 });
 
 function resetRecord() {

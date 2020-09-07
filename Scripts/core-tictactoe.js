@@ -1,6 +1,8 @@
-﻿const symbols = ['X', '0', '#', '@', '$', '%'];
+﻿import { Game, enums } from './core.js';
 
-class TicTacToe {
+const symbols = ['X', '0', '#', '@', '$', '%'];
+
+class TicTacToe extends Game {
 	#moves = [];
 	#steps = 0;
 	#isActive = true;
@@ -9,35 +11,25 @@ class TicTacToe {
     size;
 
     constructor(params) {
+        super();
+
         this.size = params.size;
         this.players = params.players;
 
-        $(document).on("click", "td", e => { this.#step(+(e.target.id)) });        
+        this.generateTable(this.size, this.size, enums.SizeChart.D1);
+        this.#addEventListeners(this);        
     }
 
     get #getArea() { return this.size * this.size; }
     get #player() { return this.#steps % this.players + 1; }
 
-    get players() { return this.#players; } set players(val) { this.#players = Math.min(val, symbols.length); }
+    get players() { return this.#players; } 
+    set players(val) { this.#players = Math.min(val, symbols.length); }
 
-    #generateTable(rows, cols) {
-        let gt = $('table'),
-            fragment = document.createDocumentFragment(),
-            tr = document.createElement('tr'),
-            td = document.createElement('td'),
-            cnt = 0;
-
-        gt.empty();
-        for (let i = 0; i < rows; i++) {
-            let row = tr.cloneNode();
-            for (let j = 0; j < cols; j++) {
-                let cell = td.cloneNode();
-                cell.setAttribute("id", cnt++);
-                row.appendChild(cell);
-            }
-            gt.append(row);
-        }
-        gt.append(fragment);
+    #addEventListeners(self) {
+        document.querySelectorAll('td').forEach(e => e.addEventListener("click", function() {
+            self.#step(+($(this).attr('id')));
+        }));
     }
 
     #determineWinner() {
@@ -94,7 +86,7 @@ class TicTacToe {
             if (winner >= 1 || this.#steps === this.#getArea - 1) {
                 this.#isActive = false;
                 setTimeout(() => {
-                    alert(winner >= 1 ? 'Player ' + this.#player + ' win!' : 'Draw')
+                    alert(winner >= 1 ? `Player ${this.#player} win!` : 'Draw')
                 }, 50);
             }
             else {
@@ -104,10 +96,9 @@ class TicTacToe {
         }
     }
 
-    showPlayer = () => $('#player').text('Player ' + this.#player + ' turn.');
+    showPlayer = () => $('#player').text(`Player ${this.#player} turn.`);
 
     start() {
-        this.#generateTable(this.size, this.size);
         this.#moves = new Array(this.#getArea).fill(0);
         this.showPlayer();
     }
@@ -115,6 +106,8 @@ class TicTacToe {
 
 $(document).ready(function() {
     load();
+    
+    document.getElementById("restart").addEventListener("click", load);
 });
 
 function load() {

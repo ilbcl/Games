@@ -1,11 +1,12 @@
-const Arrow = Object.freeze({ "Left": 1, "Up": 2, "Right": 3, "Down": 4 })
+import { Game, enums } from './core.js';
+
 const RenderType = Object.freeze({ "Empty": 0, "Food": 1, "Body": 2, })
 
-let arrow = Arrow.Right;
-class Snake {
+class Snake extends Game {
     #body = [];
     #food = [];
     #steps = 0;
+    #arrow = enums.Arrow.Right;
     #interval;
 
     rows;
@@ -14,13 +15,28 @@ class Snake {
     delayMs;
 
     constructor(params) {
+        super();
+
         this.rows = params.rows;
         this.cols = params.cols;
         this.foodCnt = params.foodCnt;
         this.delayMs = params.delayMs;
+
+        this.generateTable(this.rows, this.cols, enums.SizeChart.D2);
+        this.#addEventListeners(this);
     }
 
     get #bodyCopy() { return JSON.parse(JSON.stringify(this.#body)); }
+
+    #addEventListeners(self) {
+        document.addEventListener('keydown', self.#onKeyDown);
+    }
+
+    #onKeyDown = (e) => {
+        let keyCode = e.keyCode - 36;
+        if (keyCode >= 1 && keyCode <= 4)
+            this.#arrow = keyCode;
+    };
 
     #draw(x, y, type) {
         let color;
@@ -38,24 +54,6 @@ class Snake {
         $('#' + x + '_' + y).css("background-color", color);
     }
 
-    #generateTable() {
-        let gt = $('table'),
-            fragment = document.createDocumentFragment(),
-            tr = document.createElement('tr'),
-            td = document.createElement('td');
-
-        for (let i = 0; i < this.rows; i++) {
-            let row = tr.cloneNode();
-            for (let j = 0; j < this.cols; j++) {
-                let cell = td.cloneNode();
-                cell.setAttribute("id", i + '_' + j);
-                row.appendChild(cell);
-            }
-            gt.append(row);
-        }
-        gt.append(fragment);
-    }
-
     #getGoodFood() {
         let newFood = { X: this.getRandomPos(this.rows), Y: this.getRandomPos(this.cols) };
         for (let i = 0; i < this.#body.length; i++)
@@ -70,6 +68,7 @@ class Snake {
                 return j;
         return -1;
     }
+
     #isCrush() {
     	if(this.#body.length <= 2)
     		return false;
@@ -81,28 +80,26 @@ class Snake {
     }
 
     #changeHeadPos(index) {
-        if (arrow == Arrow.Left)
+        if (this.#arrow == enums.Arrow.Left)
             this.#body[index].Y == 0 ? this.#body[index].Y = this.cols - 1 : this.#body[index].Y--;
-        else if (arrow == Arrow.Right)
+        else if (this.#arrow == enums.Arrow.Right)
             this.#body[index].Y == this.cols - 1 ? this.#body[index].Y = 0 : this.#body[index].Y++;
-        else if (arrow == Arrow.Up)
+        else if (this.#arrow == enums.Arrow.Up)
             this.#body[index].X == 0 ? this.#body[index].X = this.rows - 1 : this.#body[index].X--;
-        else if (arrow == Arrow.Down)
+        else if (this.#arrow == enums.Arrow.Down)
             this.#body[index].X == this.rows - 1 ? this.#body[index].X = 0 : this.#body[index].X++;
     }
 
     #changeBackPos(index) {
-        if (arrow == Arrow.Left)
+        if (this.#arrow == enums.Arrow.Left)
             this.#body[index].Y++;
-        else if (arrow == Arrow.Right)
+        else if (this.#arrow == enums.Arrow.Right)
             this.#body[index].Y--;
-        else if (arrow == Arrow.Up)
+        else if (this.#arrow == enums.Arrow.Up)
             this.#body[index].X++;
-        else if (arrow == Arrow.Down)
+        else if (this.#arrow == enums.Arrow.Down)
             this.#body[index].X--;
     }
-
-    getRandomPos = (cnt) => Math.floor(Math.random() * cnt) + 0;
 
     engine = () => {
         this.#body.unshift(this.#bodyCopy[0]);
@@ -139,7 +136,6 @@ class Snake {
     }
 
     go() {
-        this.#generateTable();
         let startPlace = { X: 0, Y: 0 };
         this.#body.push(startPlace);
         this.interval = setInterval(this.engine, this.delayMs);
@@ -147,14 +143,8 @@ class Snake {
 
     stop() {
         clearInterval(this.interval);
-        alert("Game over! Your score: " + this.#body.length + ", steps: " + this.#steps);
+        alert(`Game over! Your score: ${this.#body.length - 1}, steps: ${this.#steps}`);
     }
-}
-
-document.onkeydown = function(e) {
-    let keyCode = e.keyCode - 36;
-    if (keyCode >= 1 && keyCode <= 4)
-        arrow = keyCode;
 }
 
 $(function() {

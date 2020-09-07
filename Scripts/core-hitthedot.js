@@ -1,8 +1,7 @@
-﻿const RenderType = Object.freeze({ "Empty": 0, "Goal": 1 })
-const TimeUnit = Object.freeze({ "Second": 1, "Minute": 2 })
+﻿import { Game, enums } from './core.js';
 
 let interval;
-class HitTheDot {
+class HitTheDot extends Game {
 	#time = 0;
 	#points = 0;
 	#goal;
@@ -13,13 +12,16 @@ class HitTheDot {
 	roundTime;
 	roundTimeUnit;
 
-	constructor({ rows, cols, roundTime = 30, roundTimeUnit = TimeUnit.Second }) {
+	constructor({ rows, cols, roundTime = 30, roundTimeUnit = enums.TimeUnit.Second }) {
+        super();
+
 	    this.rows = rows;
 	    this.cols = cols;
 	    this.roundTime = roundTime;
 	    this.roundTimeUnit = roundTimeUnit;
 
-	    $(document).on("click", "td", e => { this.#choose(+(e.target.id)) });
+	    this.generateTable(this.rows, this.cols, enums.SizeChart.D1);
+        this.#addEventListeners(this);
 	}
 
 	get #getArea() { return this.rows * this.cols; }
@@ -27,10 +29,10 @@ class HitTheDot {
 	get roundTimeSec() {
 	    if (this.#roundTimeSec === undefined) {
 	        switch (this.roundTimeUnit) {
-	            case TimeUnit.Second:
+	            case enums.TimeUnit.Second:
 	                this.#roundTimeSec = this.roundTime;
 	                break;
-	            case TimeUnit.Minute:
+	            case enums.TimeUnit.Minute:
 	                this.#roundTimeSec = Math.floor(this.roundTime * 60);
 	                break;
 	        }
@@ -38,30 +40,16 @@ class HitTheDot {
 	    return this.#roundTimeSec;
 	}
 
-	#generateTable(rows, cols) {
-        let gt = $('table:last'),
-            fragment = document.createDocumentFragment(),
-            tr = document.createElement('tr'),
-            td = document.createElement('td'),
-            cnt = 0;
-
-        gt.empty();
-        for (let i = 0; i < rows; i++) {
-            let row = tr.cloneNode();
-            for (let j = 0; j < cols; j++) {
-                let cell = td.cloneNode();
-                cell.setAttribute("id", cnt++);
-                row.appendChild(cell);
-            }
-            gt.append(row);
-        }
-        gt.append(fragment);
+    #addEventListeners(self) {
+        document.querySelectorAll('td').forEach(e => e.addEventListener("click", function() {
+            self.#choose(+($(this).attr('id')));
+        }));
     }
 
     #draw(id, type) {
         let color;
         switch (type) {
-            case RenderType.Goal:
+            case enums.RenderType.Content:
                 color = "orange";
                 break;
             default:
@@ -76,7 +64,7 @@ class HitTheDot {
     		return;
 
         if (id === this.#goal) {
-        	this.#draw(id, RenderType.Empty);
+        	this.#draw(id, enums.RenderType.Empty);
         	this.#setNewGoal();
             this.#points++;
         }
@@ -86,8 +74,8 @@ class HitTheDot {
     }
 
     #setNewGoal() {
-        this.#goal = this.getRandomPos();
-        this.#draw(this.#goal, RenderType.Goal);
+        this.#goal = this.getRandomPos(this.#getArea);
+        this.#draw(this.#goal, enums.RenderType.Content);
     }
 
     #startTimer() {
@@ -100,22 +88,15 @@ class HitTheDot {
         }, 1000);
     }
 
-    getRandomPos = () => Math.floor(Math.random() * this.#getArea) + 0;
-
     setTimer = () => $("#timer").text(this.#time);
 
     setResult = () => $("#result").text(this.#points);
 
-    engine = () => {
-    	this.#setNewGoal();
-        this.#startTimer();
-    }
-
     go() {
-        this.#generateTable(this.rows, this.cols);
     	this.setResult();
     	this.setTimer();
-        this.engine();
+        this.#setNewGoal();
+        this.#startTimer();
     }
 }
 
@@ -138,13 +119,18 @@ function hideMenu() {
     $('#action').show();
 }
 
+$(document).ready(function() {
+    document.getElementById("newGame").addEventListener("click", showMenu);
+    document.querySelectorAll('input[id*="start"]').forEach(e => e.addEventListener("click", load));
+});
+
 function load() {
     hideMenu();
     let hitTheDot = new HitTheDot({
         rows: $('#row').val(),
         cols: $('#col').val(),
         roundTime: 0.25,
-        roundTimeUnit: TimeUnit.Minute
+        roundTimeUnit: enums.TimeUnit.Minute
     });
     hitTheDot.go();
 }

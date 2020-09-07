@@ -7,7 +7,7 @@
     <script src="Scripts/jquery-ui-1.11.1.js"></script>
     <script src="Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
-    <script src="Scripts/core-hitthedot.min.js"></script>
+    <script type="module" src="Scripts/core-hitthedot.min.js"></script>
     <link rel="stylesheet" href="Styles/bootstrap.min.css">
     <link rel="stylesheet" href="Styles/hitthedot.css">
 </head>
@@ -23,7 +23,7 @@
             <td><input type="text" id="col" class="form-control"></td>
         </tr>
     </table>
-    <input class="btn btn-default" type="submit" onclick="load()" value="Start" />
+    <input class="btn btn-default" id="start" type="submit" value="Start" />
 </div>
 <div align="center" id="action">
     <span class="label label-info">Score:</span>
@@ -31,9 +31,9 @@
     <span class="label label-info">Time:</span>
     <span class="label label-info" id="timer"></span>
     <br />
-    <input class="btn btn-default" type="submit" onclick="showMenu()" value="New game" />
+    <input class="btn btn-default" id="newGame" type="submit" value="New game" />
     <br />
-    <input class="btn btn-default" type="submit" onclick="load()" value="Restart" />
+    <input class="btn btn-default" id="restart" type="submit" value="Restart" />
     <table id="tab" />
 </div>
 

@@ -7,7 +7,7 @@
     <script src="Scripts/jquery-ui-1.11.1.js"></script>
     <script src="Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
-    <script src="Scripts/core-memory.min.js"></script>
+    <script type="module" src="Scripts/core-memory.min.js"></script>
     <link rel="stylesheet" href="Styles/bootstrap.min.css">
     <link rel="stylesheet" href="Styles/memory.css">
 </head>
@@ -15,12 +15,12 @@
     <div class="badge">Score:</div>
     <div class="badge" id="result"></div>
     <br />
-    <input class="btn btn-default" id="start" type="submit" onclick="load()" value="Restart" />
+    <input class="btn btn-default" id="start" type="submit" value="Restart" />
     <br />
     <div class="badge">Record:</div>
     <div class="badge" id="record"></div>
     <br />
-    <input class="btn btn-default" type="submit" onclick="resetRecord()" value="Reset record" />
+    <input class="btn btn-default" id="resetRecord" type="submit" value="Reset record" />
     <br />
     <table />
 </div>
